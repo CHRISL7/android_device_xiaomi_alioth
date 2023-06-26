@@ -239,11 +239,19 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 # Namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH)
+    $(LOCAL_PATH) \
+    hardware/xiaomi
 
 # NFC
+TARGET_NFC_SKU := pro
+
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/nfc/,$(TARGET_COPY_OUT_VENDOR)/etc)
+
+PRODUCT_PACKAGES += \
+    android.hardware.secure_element@1.2-service \
+    libchrome.vendor \
+    SecureElement
 
 # Overlays
 PRODUCT_PACKAGES += \
@@ -251,8 +259,8 @@ PRODUCT_PACKAGES += \
     AliothFrameworks \
     AliothSettings \
     AliothSystemUI \
-    AOSPAAliothFrameworks \
-    AOSPAAliothSystemUI \
+    AOSPAliothFrameworks \
+    AOSPAliothSystemUI \
     FrameworksResTarget \
     SettingsOverlayM2012K11AG \
     SettingsOverlayM2012K11AI \
@@ -279,6 +287,10 @@ PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.radio.manual_nw_rej_ct=1
 
 # QTI
+$(call inherit-product, device/qcom/common/common.mk)
+TARGET_USE_SM8250_HALS := true
+TARGET_USES_SN100X_HAL := true
+
 TARGET_COMMON_QTI_COMPONENTS := \
     adreno \
     audio \
@@ -296,8 +308,6 @@ TARGET_COMMON_QTI_COMPONENTS := \
     vibrator \
     wfd \
     wlan
-
-TARGET_NFC_SKU := pro
 
 # Sensors
 PRODUCT_VENDOR_PROPERTIES += \
